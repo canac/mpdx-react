@@ -83,7 +83,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/luxon", "npm:3.1.0"],\
             ["@types/node", "npm:18.7.18"],\
             ["@types/react", "npm:18.0.21"],\
-            ["@types/seedrandom", "npm:3.0.5"],\
             ["@types/testing-library__jest-dom", "npm:5.14.5"],\
             ["@types/uuid", "npm:9.0.1"],\
             ["@typescript-eslint/eslint-plugin", "virtual:9909ff5388c6b6a3a46f12eb37c0afb449fcd1eedb9f02d871bde711a076c929583f48ecc4b85fa6d71478b076104a25f83dee45bc69687a22f551c576d7595d#npm:5.38.0"],\
@@ -149,7 +148,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-virtuoso", "virtual:9909ff5388c6b6a3a46f12eb37c0afb449fcd1eedb9f02d871bde711a076c929583f48ecc4b85fa6d71478b076104a25f83dee45bc69687a22f551c576d7595d#npm:2.19.0"],\
             ["recharts", "virtual:9909ff5388c6b6a3a46f12eb37c0afb449fcd1eedb9f02d871bde711a076c929583f48ecc4b85fa6d71478b076104a25f83dee45bc69687a22f551c576d7595d#npm:2.3.2"],\
             ["rollbar", "npm:2.25.2"],\
-            ["seedrandom", "npm:3.0.5"],\
             ["storybook", "npm:6.5.16"],\
             ["storybook-addon-designs", "npm:6.3.1"],\
             ["storybook-react-i18next", "virtual:9909ff5388c6b6a3a46f12eb37c0afb449fcd1eedb9f02d871bde711a076c929583f48ecc4b85fa6d71478b076104a25f83dee45bc69687a22f551c576d7595d#npm:1.1.2"],\
@@ -13858,15 +13856,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@types/seedrandom", [\
-        ["npm:3.0.5", {\
-          "packageLocation": "./.yarn/cache/@types-seedrandom-npm-3.0.5-b6a276228d-d63d56ebc6.zip/node_modules/@types/seedrandom/",\
-          "packageDependencies": [\
-            ["@types/seedrandom", "npm:3.0.5"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["@types/source-list-map", [\
         ["npm:0.1.2", {\
           "packageLocation": "./.yarn/cache/@types-source-list-map-npm-0.1.2-1983e10da7-fda8f37537.zip/node_modules/@types/source-list-map/",\
@@ -27146,7 +27135,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/luxon", "npm:3.1.0"],\
             ["@types/node", "npm:18.7.18"],\
             ["@types/react", "npm:18.0.21"],\
-            ["@types/seedrandom", "npm:3.0.5"],\
             ["@types/testing-library__jest-dom", "npm:5.14.5"],\
             ["@types/uuid", "npm:9.0.1"],\
             ["@typescript-eslint/eslint-plugin", "virtual:9909ff5388c6b6a3a46f12eb37c0afb449fcd1eedb9f02d871bde711a076c929583f48ecc4b85fa6d71478b076104a25f83dee45bc69687a22f551c576d7595d#npm:5.38.0"],\
@@ -27212,7 +27200,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-virtuoso", "virtual:9909ff5388c6b6a3a46f12eb37c0afb449fcd1eedb9f02d871bde711a076c929583f48ecc4b85fa6d71478b076104a25f83dee45bc69687a22f551c576d7595d#npm:2.19.0"],\
             ["recharts", "virtual:9909ff5388c6b6a3a46f12eb37c0afb449fcd1eedb9f02d871bde711a076c929583f48ecc4b85fa6d71478b076104a25f83dee45bc69687a22f551c576d7595d#npm:2.3.2"],\
             ["rollbar", "npm:2.25.2"],\
-            ["seedrandom", "npm:3.0.5"],\
             ["storybook", "npm:6.5.16"],\
             ["storybook-addon-designs", "npm:6.3.1"],\
             ["storybook-react-i18next", "virtual:9909ff5388c6b6a3a46f12eb37c0afb449fcd1eedb9f02d871bde711a076c929583f48ecc4b85fa6d71478b076104a25f83dee45bc69687a22f551c576d7595d#npm:1.1.2"],\
