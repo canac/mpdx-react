@@ -24,8 +24,9 @@ const ContactDonationsContainer = styled(Box)(({ theme }) => ({
 }));
 
 const DonationsTabContainer = styled(Box)(({ theme }) => ({
-  margin: theme.spacing(1),
+  marginBottom: theme.spacing(2),
   background: theme.palette.background.paper,
+  borderBottom: '1px solid #DCDCDC',
 }));
 
 const DonationsGraphContainer = styled(Box)(({ theme }) => ({
@@ -51,6 +52,10 @@ const ContactDonationsLoadingPlaceHolder = styled(Skeleton)(({ theme }) => ({
   height: '24px',
   margin: theme.spacing(2, 0),
 }));
+
+const StyledTabPanel = styled(TabPanel)({
+  padding: 0,
+});
 
 interface ContactDonationsProp {
   accountListId: string;
@@ -128,7 +133,7 @@ export const ContactDonationsTab: React.FC<ContactDonationsProp> = ({
             />
           </DonationsTabList>
         </DonationsTabContainer>
-        <TabPanel value={DonationTabKey.Donations}>
+        <StyledTabPanel value={DonationTabKey.Donations}>
           {loading ? (
             <>
               <ContactDonationsLoadingPlaceHolder />
@@ -149,8 +154,8 @@ export const ContactDonationsTab: React.FC<ContactDonationsProp> = ({
               visibleColumnsStorageKey="contact-donations"
             />
           )}
-        </TabPanel>
-        <TabPanel value={DonationTabKey.PartnershipInfo}>
+        </StyledTabPanel>
+        <StyledTabPanel value={DonationTabKey.PartnershipInfo}>
           {loading ? (
             <>
               <ContactDonationsLoadingPlaceHolder />
@@ -160,7 +165,7 @@ export const ContactDonationsTab: React.FC<ContactDonationsProp> = ({
           ) : (
             <PartnershipInfo contact={data?.contact ?? null} />
           )}
-        </TabPanel>
+        </StyledTabPanel>
       </TabContext>
     </ContactDonationsContainer>
   );
