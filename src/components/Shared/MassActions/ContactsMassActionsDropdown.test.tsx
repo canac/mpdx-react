@@ -296,4 +296,32 @@ describe('ContactsMassActionsDropdown', () => {
     );
     expect(queryByTestId('MergeModal')).not.toBeInTheDocument();
   });
+  it('Calls function to deselect contacts when merge is complete', async () => {
+    const deselectAll = jest.fn();
+    const selectedIdsMerge = ['abc', 'def'];
+    const { getByTestId, getByText, queryByText, getByRole } = render(
+      <ThemeProvider theme={theme}>
+        <GqlMockedProvider>
+          <ContactsMassActionsDropdown
+            filterPanelOpen={false}
+            contactDetailsOpen={false}
+            contactsView={TableViewModeEnum.List}
+            selectedIds={selectedIdsMerge}
+            massDeselectAll={deselectAll}
+          />
+        </GqlMockedProvider>
+      </ThemeProvider>,
+    );
+    expect(queryByText('Merge')).not.toBeInTheDocument();
+    const actionsButton = getByText('Actions') as HTMLInputElement;
+    userEvent.click(actionsButton);
+    expect(getByText('Merge')).toBeInTheDocument();
+    userEvent.click(getByText('Merge'));
+    expect(getByTestId('MergeModal')).toBeInTheDocument();
+    const button = getByRole('button', { name: 'Merge' });
+    await waitFor(() => userEvent.click(button));
+    await waitFor(() => {
+      expect(deselectAll).toHaveBeenCalled();
+    });
+  });
 });
