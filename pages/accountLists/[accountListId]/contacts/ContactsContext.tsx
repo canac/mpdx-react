@@ -76,6 +76,7 @@ export type ContactsType = {
   urlFilters: any;
   isFiltered: boolean;
   selectedIds: string[];
+  deselectAllContacts: () => void;
   userOptionsLoading: boolean;
 };
 
@@ -205,6 +206,7 @@ export const ContactsProvider: React.FC<Props> = ({
     isRowChecked,
     toggleSelectAll,
     toggleSelectionById,
+    deselectAll,
   } = useMassSelection(
     data?.contacts?.totalCount ?? 0,
     allContactIds,
@@ -419,6 +421,7 @@ export const ContactsProvider: React.FC<Props> = ({
         urlFilters: urlFilters,
         isFiltered: isFiltered,
         selectedIds: ids,
+        deselectAllContacts: deselectAll,
         userOptionsLoading: userOptionsLoading,
       }}
     >

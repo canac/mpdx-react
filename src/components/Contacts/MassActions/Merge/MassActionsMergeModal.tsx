@@ -34,12 +34,14 @@ interface MassActionsMergeModalProps {
   ids: string[];
   accountListId: string;
   handleClose: () => void;
+  massDeselectAll?: () => void;
 }
 
 export const MassActionsMergeModal: React.FC<MassActionsMergeModalProps> = ({
-  handleClose,
-  accountListId,
   ids,
+  accountListId,
+  handleClose,
+  massDeselectAll,
 }) => {
   const { t } = useTranslation();
   const locale = useLocale();
@@ -75,6 +77,7 @@ export const MassActionsMergeModal: React.FC<MassActionsMergeModalProps> = ({
     enqueueSnackbar(t('Contacts merged!'), {
       variant: 'success',
     });
+    massDeselectAll && massDeselectAll();
     handleClose();
   };
 
