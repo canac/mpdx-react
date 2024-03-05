@@ -178,9 +178,7 @@ describe('ExportModal', () => {
           }>
             mocks={mocks}
           >
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
-            /* @ts-ignore */}
-            <ContactsContext.Provider value={{ deselectAll }}>
+            <ContactsContext.Provider value={{ deselectAll } as unknown as ContactsType}>
               <MassActionsMergeModal
                 accountListId={accountListId}
                 ids={['contact-1', 'contact-2']}
