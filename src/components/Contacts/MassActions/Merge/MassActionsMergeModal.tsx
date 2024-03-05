@@ -20,7 +20,10 @@ import { useLocale } from 'src/hooks/useLocale';
 import { dateFormatShort } from 'src/lib/intlFormat/intlFormat';
 import theme from 'src/theme';
 import { getLocalizedContactStatus } from 'src/utils/functions/getLocalizedContactStatus';
-import { ContactsContext, ContactsType } from '../../../../../pages/accountLists/[accountListId]/contacts/ContactsContext';
+import {
+  ContactsContext,
+  ContactsType,
+} from '../../../../../pages/accountLists/[accountListId]/contacts/ContactsContext';
 import Modal from '../../../common/Modal/Modal';
 import {
   useGetContactsForMergingQuery,
@@ -42,10 +45,7 @@ export const MassActionsMergeModal: React.FC<MassActionsMergeModalProps> = ({
   accountListId,
   ids,
 }) => {
-
-  const {
-    deselectAll
-  } = useContext(ContactsContext) as ContactsType;
+  const { deselectAll } = useContext(ContactsContext) as ContactsType;
 
   const { t } = useTranslation();
   const locale = useLocale();
