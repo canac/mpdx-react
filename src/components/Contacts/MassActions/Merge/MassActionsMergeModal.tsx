@@ -44,7 +44,7 @@ export const MassActionsMergeModal: React.FC<MassActionsMergeModalProps> = ({
 }) => {
 
   const {
-    toggleSelectionById
+    deselectAll
   } = useContext(ContactsContext) as ContactsType;
 
   const { t } = useTranslation();
@@ -82,7 +82,7 @@ export const MassActionsMergeModal: React.FC<MassActionsMergeModalProps> = ({
       variant: 'success',
     });
 
-    toggleSelectionById(primaryContactId);
+    deselectAll();
     handleClose();
   };
 

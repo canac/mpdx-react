@@ -11,7 +11,7 @@ import { AppSettingsProvider } from 'src/components/common/AppSettings/AppSettin
 import { useAccountListId } from 'src/hooks/useAccountListId';
 import theme from 'src/theme';
 import TestRouter from '../../../../__tests__/util/TestRouter';
-import { ContactsProvider} from '../../../../pages/accountLists/[accountListId]/contacts/ContactsContext';
+import { ContactsProvider } from '../../../../pages/accountLists/[accountListId]/contacts/ContactsContext';
 import useTaskModal from '../../../hooks/useTaskModal';
 import { TableViewModeEnum } from '../Header/ListHeader';
 import { ContactsMassActionsDropdown } from './ContactsMassActionsDropdown';
@@ -258,36 +258,19 @@ describe('ContactsMassActionsDropdown', () => {
 
   it('opens merge contacts modal with multiple id selected', () => {
     const selectedIdsMerge = ['abc', 'def'];
-    const router = {
-      query: {
-        accountListId: 'account-list-1',
-        contactId: 'contact-1',
-      },
-      isReady: true,
-    };
     const { getByTestId, getByText, queryByText } = render(
       <ThemeProvider theme={theme}>
-        <TestRouter router={router}>
+        <TestRouter>
           <GqlMockedProvider>
             <LocalizationProvider dateAdapter={AdapterLuxon}>
               <SnackbarProvider>
-                <ContactsProvider
-                  urlFilters={{}}
-                  activeFilters={{}}
-                  setActiveFilters={() => {}}
-                  starredFilter={{}}
-                  setStarredFilter={() => {}}
-                  filterPanelOpen={false}
-                  setFilterPanelOpen={() => {}}
-                  contactId={[]}
-                  searchTerm={'test'}
-                >
-                <ContactsMassActionsDropdown
-                  filterPanelOpen={false}
-                  contactDetailsOpen={false}
-                  contactsView={TableViewModeEnum.List}
-                  selectedIds={selectedIdsMerge}
-                />
+                <ContactsProvider activeFilters={{}}>
+                  <ContactsMassActionsDropdown
+                    filterPanelOpen={false}
+                    contactDetailsOpen={false}
+                    contactsView={TableViewModeEnum.List}
+                    selectedIds={selectedIdsMerge}
+                  />
                 </ContactsProvider>
               </SnackbarProvider>
             </LocalizationProvider>
