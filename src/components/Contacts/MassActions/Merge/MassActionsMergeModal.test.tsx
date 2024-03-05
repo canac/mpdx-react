@@ -77,7 +77,6 @@ describe('ExportModal', () => {
   const MassActionsMergeModalWrapper: React.FC<
     MassActionsMergeModalWrapperProps
   > = ({ mutationSpy }) => {
-    const deselectAll = jest.fn();
     return (
       <ThemeProvider theme={theme}>
         <TestRouter>
@@ -87,7 +86,16 @@ describe('ExportModal', () => {
             mocks={mocks}
             onCall={mutationSpy}
           >
-            <ContactsProvider value={{ deselectAll }} activeFilters={{}}>
+            <ContactsProvider
+              activeFilters={{}}
+              setActiveFilters={() => {}}
+              starredFilter={{}}
+              setStarredFilter={() => {}}
+              filterPanelOpen={false}
+              setFilterPanelOpen={() => {}}
+              contactId={[]}
+              searchTerm={''}
+            >
               <MassActionsMergeModal
                 accountListId={accountListId}
                 ids={['contact-1', 'contact-2']}
@@ -170,6 +178,8 @@ describe('ExportModal', () => {
           }>
             mocks={mocks}
           >
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+            /* @ts-ignore */}
             <ContactsContext.Provider value={{ deselectAll }}>
               <MassActionsMergeModal
                 accountListId={accountListId}

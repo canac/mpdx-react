@@ -264,7 +264,16 @@ describe('ContactsMassActionsDropdown', () => {
           <GqlMockedProvider>
             <LocalizationProvider dateAdapter={AdapterLuxon}>
               <SnackbarProvider>
-                <ContactsProvider activeFilters={{}}>
+                <ContactsProvider
+                  activeFilters={{}}
+                  setActiveFilters={() => {}}
+                  starredFilter={{}}
+                  setStarredFilter={() => {}}
+                  filterPanelOpen={false}
+                  setFilterPanelOpen={() => {}}
+                  contactId={[]}
+                  searchTerm={''}
+                >
                   <ContactsMassActionsDropdown
                     filterPanelOpen={false}
                     contactDetailsOpen={false}
