@@ -9,7 +9,7 @@ import { GqlMockedProvider } from '../../../../../__tests__/util/graphqlMocking'
 import {
   ContactsContext,
   ContactsProvider,
-} from '../../../../../pages/accountLists/[accountListId]/contacts/ContactsContext';
+} from 'pages/accountLists/[accountListId]/contacts/ContactsContext';
 import theme from '../../../../theme';
 import { GetContactsForMergingQuery } from './MassActionsMerge.generated';
 import { MassActionsMergeModal } from './MassActionsMergeModal';
