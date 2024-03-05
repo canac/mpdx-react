@@ -3,13 +3,13 @@ import { ThemeProvider } from '@mui/material/styles';
 import { queryByText, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
-import { StatusEnum } from 'src/graphql/types.generated';
 import TestRouter from '__tests__/util/TestRouter';
-import { GqlMockedProvider } from '../../../../../__tests__/util/graphqlMocking';
 import {
   ContactsContext,
   ContactsProvider,
 } from 'pages/accountLists/[accountListId]/contacts/ContactsContext';
+import { StatusEnum } from 'src/graphql/types.generated';
+import { GqlMockedProvider } from '../../../../../__tests__/util/graphqlMocking';
 import theme from '../../../../theme';
 import { GetContactsForMergingQuery } from './MassActionsMerge.generated';
 import { MassActionsMergeModal } from './MassActionsMergeModal';
@@ -73,41 +73,41 @@ interface MassActionsMergeModalWrapperProps {
   mutationSpy?: () => void;
 }
 
-describe('ExportModal', () => {
-  const MassActionsMergeModalWrapper: React.FC<
-    MassActionsMergeModalWrapperProps
-  > = ({ mutationSpy }) => {
-    return (
-      <ThemeProvider theme={theme}>
-        <TestRouter>
-          <GqlMockedProvider<{
-            GetContactsForMerging: GetContactsForMergingQuery;
-          }>
-            mocks={mocks}
-            onCall={mutationSpy}
+const MassActionsMergeModalWrapper: React.FC<
+  MassActionsMergeModalWrapperProps
+> = ({ mutationSpy }) => {
+  return (
+    <ThemeProvider theme={theme}>
+      <TestRouter>
+        <GqlMockedProvider<{
+          GetContactsForMerging: GetContactsForMergingQuery;
+        }>
+          mocks={mocks}
+          onCall={mutationSpy}
+        >
+          <ContactsProvider
+            activeFilters={{}}
+            setActiveFilters={() => {}}
+            starredFilter={{}}
+            setStarredFilter={() => {}}
+            filterPanelOpen={false}
+            setFilterPanelOpen={() => {}}
+            contactId={[]}
+            searchTerm={''}
           >
-            <ContactsProvider
-              activeFilters={{}}
-              setActiveFilters={() => {}}
-              starredFilter={{}}
-              setStarredFilter={() => {}}
-              filterPanelOpen={false}
-              setFilterPanelOpen={() => {}}
-              contactId={[]}
-              searchTerm={''}
-            >
-              <MassActionsMergeModal
-                accountListId={accountListId}
-                ids={['contact-1', 'contact-2']}
-                handleClose={handleClose}
-              />
-            </ContactsProvider>
-          </GqlMockedProvider>
-        </TestRouter>
-      </ThemeProvider>
-    );
-  };
+            <MassActionsMergeModal
+              accountListId={accountListId}
+              ids={['contact-1', 'contact-2']}
+              handleClose={handleClose}
+            />
+          </ContactsProvider>
+        </GqlMockedProvider>
+      </TestRouter>
+    </ThemeProvider>
+  );
+};
 
+describe('ExportModal', () => {
   it('should render modal', () => {
     const { getByText } = render(<MassActionsMergeModalWrapper />);
 
@@ -178,7 +178,9 @@ describe('ExportModal', () => {
           }>
             mocks={mocks}
           >
-            <ContactsContext.Provider value={{ deselectAll } as unknown as ContactsType}>
+            <ContactsContext.Provider
+              value={{ deselectAll } as unknown as ContactsType}
+            >
               <MassActionsMergeModal
                 accountListId={accountListId}
                 ids={['contact-1', 'contact-2']}
