@@ -168,7 +168,7 @@ describe('ExportModal', () => {
     });
   });
 
-  it('Calls function to deselect contacts when merge is complete', async () => {
+  it('calls function to deselect contacts when merge is complete', async () => {
     const deselectAll = jest.fn();
     const { getByRole } = render(
       <ThemeProvider theme={theme}>
