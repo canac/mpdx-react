@@ -7,6 +7,7 @@ import TestRouter from '__tests__/util/TestRouter';
 import {
   ContactsContext,
   ContactsProvider,
+  ContactsType,
 } from 'pages/accountLists/[accountListId]/contacts/ContactsContext';
 import { StatusEnum } from 'src/graphql/types.generated';
 import { GqlMockedProvider } from '../../../../../__tests__/util/graphqlMocking';
