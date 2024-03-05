@@ -178,7 +178,6 @@ export const ListHeader: React.FC<ListHeaderProps> = ({
             buttonGroup={buttonGroup}
             contactsView={contactsView}
             selectedIds={selectedIds}
-            massDeselectAll={massDeselectAll}
           />
         )}
         {page === 'report' && (
@@ -189,7 +188,6 @@ export const ListHeader: React.FC<ListHeaderProps> = ({
               buttonGroup={buttonGroup}
               contactsView={contactsView}
               selectedIds={selectedIds}
-              massDeselectAll={massDeselectAll}
             />
           </Box>
         )}

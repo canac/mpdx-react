@@ -60,7 +60,6 @@ export const ContactsMainPanelHeader: React.FC = () => {
     urlFilters,
     handleViewModeChange,
     selectedIds,
-    deselectAllContacts,
   } = React.useContext(ContactsContext) as ContactsType;
 
   const { data } = useContactsQuery({
@@ -98,7 +97,6 @@ export const ContactsMainPanelHeader: React.FC = () => {
       headerCheckboxState={selectionType}
       selectedIds={selectedIds}
       showShowingCount={viewMode === TableViewModeEnum.List}
-      massDeselectAll={deselectAllContacts}
       buttonGroup={
         <Hidden xsDown>
           <Box display="flex" alignItems="center">

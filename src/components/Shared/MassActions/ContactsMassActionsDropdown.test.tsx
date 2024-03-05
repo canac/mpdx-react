@@ -10,6 +10,8 @@ import { GqlMockedProvider } from '__tests__/util/graphqlMocking';
 import { AppSettingsProvider } from 'src/components/common/AppSettings/AppSettingsProvider';
 import { useAccountListId } from 'src/hooks/useAccountListId';
 import theme from 'src/theme';
+import TestRouter from '../../../../__tests__/util/TestRouter';
+import { ContactsProvider} from '../../../../pages/accountLists/[accountListId]/contacts/ContactsContext';
 import useTaskModal from '../../../hooks/useTaskModal';
 import { TableViewModeEnum } from '../Header/ListHeader';
 import { ContactsMassActionsDropdown } from './ContactsMassActionsDropdown';
@@ -256,20 +258,41 @@ describe('ContactsMassActionsDropdown', () => {
 
   it('opens merge contacts modal with multiple id selected', () => {
     const selectedIdsMerge = ['abc', 'def'];
+    const router = {
+      query: {
+        accountListId: 'account-list-1',
+        contactId: 'contact-1',
+      },
+      isReady: true,
+    };
     const { getByTestId, getByText, queryByText } = render(
       <ThemeProvider theme={theme}>
-        <GqlMockedProvider>
-          <LocalizationProvider dateAdapter={AdapterLuxon}>
-            <SnackbarProvider>
-              <ContactsMassActionsDropdown
-                filterPanelOpen={false}
-                contactDetailsOpen={false}
-                contactsView={TableViewModeEnum.List}
-                selectedIds={selectedIdsMerge}
-              />
-            </SnackbarProvider>
-          </LocalizationProvider>
-        </GqlMockedProvider>
+        <TestRouter router={router}>
+          <GqlMockedProvider>
+            <LocalizationProvider dateAdapter={AdapterLuxon}>
+              <SnackbarProvider>
+                <ContactsProvider
+                  urlFilters={{}}
+                  activeFilters={{}}
+                  setActiveFilters={() => {}}
+                  starredFilter={{}}
+                  setStarredFilter={() => {}}
+                  filterPanelOpen={false}
+                  setFilterPanelOpen={() => {}}
+                  contactId={[]}
+                  searchTerm={'test'}
+                >
+                <ContactsMassActionsDropdown
+                  filterPanelOpen={false}
+                  contactDetailsOpen={false}
+                  contactsView={TableViewModeEnum.List}
+                  selectedIds={selectedIdsMerge}
+                />
+                </ContactsProvider>
+              </SnackbarProvider>
+            </LocalizationProvider>
+          </GqlMockedProvider>
+        </TestRouter>
       </ThemeProvider>,
     );
     expect(queryByText('Merge')).not.toBeInTheDocument();
@@ -295,33 +318,5 @@ describe('ContactsMassActionsDropdown', () => {
       { variant: 'error' },
     );
     expect(queryByTestId('MergeModal')).not.toBeInTheDocument();
-  });
-  it('Calls function to deselect contacts when merge is complete', async () => {
-    const deselectAll = jest.fn();
-    const selectedIdsMerge = ['abc', 'def'];
-    const { getByTestId, getByText, queryByText, getByRole } = render(
-      <ThemeProvider theme={theme}>
-        <GqlMockedProvider>
-          <ContactsMassActionsDropdown
-            filterPanelOpen={false}
-            contactDetailsOpen={false}
-            contactsView={TableViewModeEnum.List}
-            selectedIds={selectedIdsMerge}
-            massDeselectAll={deselectAll}
-          />
-        </GqlMockedProvider>
-      </ThemeProvider>,
-    );
-    expect(queryByText('Merge')).not.toBeInTheDocument();
-    const actionsButton = getByText('Actions') as HTMLInputElement;
-    userEvent.click(actionsButton);
-    expect(getByText('Merge')).toBeInTheDocument();
-    userEvent.click(getByText('Merge'));
-    expect(getByTestId('MergeModal')).toBeInTheDocument();
-    const button = getByRole('button', { name: 'Merge' });
-    await waitFor(() => userEvent.click(button));
-    await waitFor(() => {
-      expect(deselectAll).toHaveBeenCalled();
-    });
   });
 });

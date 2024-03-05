@@ -27,7 +27,6 @@ interface ContactsMassActionsDropdownProps {
   contactsView?: TableViewModeEnum;
   buttonGroup?: ReactElement;
   selectedIds: string[];
-  massDeselectAll?: () => void;
 }
 
 export const ContactsMassActionsDropdown: React.FC<
@@ -38,7 +37,6 @@ export const ContactsMassActionsDropdown: React.FC<
   contactsView,
   buttonGroup,
   selectedIds,
-  massDeselectAll,
 }) => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
@@ -306,7 +304,6 @@ export const ContactsMassActionsDropdown: React.FC<
           ids={selectedIds}
           accountListId={accountListId ?? ''}
           handleClose={() => setMergeModalOpen(false)}
-          massDeselectAll={massDeselectAll}
         />
       )}
     </>
