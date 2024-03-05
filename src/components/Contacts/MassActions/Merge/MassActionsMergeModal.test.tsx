@@ -4,7 +4,7 @@ import { queryByText, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
 import { StatusEnum } from 'src/graphql/types.generated';
-import TestRouter from '../../../../../__tests__/util/TestRouter';
+import TestRouter from '__tests__/util/TestRouter';
 import { GqlMockedProvider } from '../../../../../__tests__/util/graphqlMocking';
 import {
   ContactsContext,
