@@ -108,7 +108,7 @@ const MassActionsMergeModalWrapper: React.FC<
   );
 };
 
-describe('ExportModal', () => {
+describe('MassActionsMergeModal', () => {
   it('should render modal', () => {
     const { getByText } = render(<MassActionsMergeModalWrapper />);
 

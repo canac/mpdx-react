@@ -46,7 +46,6 @@ export const MassActionsMergeModal: React.FC<MassActionsMergeModalProps> = ({
   ids,
 }) => {
   const { deselectAll } = useContext(ContactsContext) as ContactsType;
-
   const { t } = useTranslation();
   const locale = useLocale();
   const { enqueueSnackbar } = useSnackbar();
