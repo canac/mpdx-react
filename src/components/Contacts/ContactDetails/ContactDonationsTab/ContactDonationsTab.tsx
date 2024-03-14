@@ -43,8 +43,8 @@ const DonationsTab = styled(Tab)(({ theme }) => ({
   '&:hover': { opacity: 1 },
 }));
 
-const ContactDonationsLoadingPlaceHolder = styled(Skeleton)(({ theme }) => ({
-  width: '100%',
+const PartnershipInfoLoadingPlaceHolder = styled(Skeleton)(({ theme }) => ({
+  width: '20em',
   height: '24px',
   margin: theme.spacing(2, 0),
 }));
@@ -78,10 +78,9 @@ export const ContactDonationsTab: React.FC<ContactDonationsProp> = ({
       contactId: contactId,
     },
   });
-  const donorAccountIds =
-    data?.contact.contactDonorAccounts.nodes.map(
-      (donor) => donor.donorAccount.id,
-    ) ?? [];
+  const donorAccountIds = data?.contact.contactDonorAccounts.nodes.map(
+    (donor) => donor.donorAccount.id,
+  );
 
   const { t } = useTranslation();
 
@@ -96,21 +95,11 @@ export const ContactDonationsTab: React.FC<ContactDonationsProp> = ({
   };
   return (
     <ContactDonationsContainer>
-      {loading ? (
-        <>
-          <ContactDonationsLoadingPlaceHolder />
-          <ContactDonationsLoadingPlaceHolder />
-          <ContactDonationsLoadingPlaceHolder />
-        </>
-      ) : (
-        <DonationsGraph
-          accountListId={accountListId}
-          donorAccountIds={donorAccountIds}
-          convertedCurrency={
-            data?.contact.lastDonation?.amount.convertedCurrency ?? ''
-          }
-        />
-      )}
+      <DonationsGraph
+        accountListId={accountListId}
+        donorAccountIds={donorAccountIds}
+        convertedCurrency={data?.contact.lastDonation?.amount.convertedCurrency}
+      />
       <TabContext value={selectedDonationTabKey}>
         <DonationsTabContainer role="region">
           <DonationsTabList
@@ -144,9 +133,16 @@ export const ContactDonationsTab: React.FC<ContactDonationsProp> = ({
         <StyledTabPanel value={DonationTabKey.PartnershipInfo}>
           {loading ? (
             <>
-              <ContactDonationsLoadingPlaceHolder />
-              <ContactDonationsLoadingPlaceHolder />
-              <ContactDonationsLoadingPlaceHolder />
+              <PartnershipInfoLoadingPlaceHolder />
+              <PartnershipInfoLoadingPlaceHolder />
+              <PartnershipInfoLoadingPlaceHolder />
+              <PartnershipInfoLoadingPlaceHolder />
+              <PartnershipInfoLoadingPlaceHolder />
+              <PartnershipInfoLoadingPlaceHolder />
+              <PartnershipInfoLoadingPlaceHolder />
+              <PartnershipInfoLoadingPlaceHolder />
+              <PartnershipInfoLoadingPlaceHolder />
+              <PartnershipInfoLoadingPlaceHolder />
             </>
           ) : (
             <PartnershipInfo contact={data?.contact ?? null} />
