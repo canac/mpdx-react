@@ -49,8 +49,6 @@ const ExpandingContent = styled(Box)(({ open }: { open: boolean }) => ({
   flexBasis: open ? 0 : '100%',
   transition: 'flex-basis ease-in-out 225ms',
   overflowX: 'hidden',
-  position: 'relative',
-  zIndex: 10,
 }));
 
 const LeftPanelWrapper = styled(FullHeightBox)(({ theme }) => ({
@@ -120,6 +118,17 @@ export const SidePanelsLayout: FC<SidePanelsLayoutProps> = ({
 
   return (
     <OuterWrapper>
+      <RightPanelWrapper
+        data-testid="RightPanelWrapper"
+        width={isMobile ? '100%' : rightWidth}
+        headerHeight={headerHeight}
+        isScrollable
+        style={{
+          transform: rightOpen ? 'none' : 'translate(100%)',
+        }}
+      >
+        {rightPanel}
+      </RightPanelWrapper>
       <ExpandingContent open={rightOpen}>
         <CollapsibleWrapper justifyContent="flex-end">
           <LeftPanelWrapper
@@ -135,16 +144,6 @@ export const SidePanelsLayout: FC<SidePanelsLayoutProps> = ({
           <ExpandingContent open={leftOpen}>{mainContent}</ExpandingContent>
         </CollapsibleWrapper>
       </ExpandingContent>
-      <RightPanelWrapper
-        width={isMobile ? '100%' : rightWidth}
-        headerHeight={headerHeight}
-        isScrollable
-        style={{
-          transform: rightOpen ? 'none' : 'translate(100%)',
-        }}
-      >
-        {rightPanel}
-      </RightPanelWrapper>
     </OuterWrapper>
   );
 };
