@@ -18,8 +18,7 @@ frontend:
         - yarn -v
         - yarn
         - yarn disable-telemetry
-        - yarn gql:server
-        - yarn gql
+        - yarn invalid
     build:
       commands:
         - yarn build:amplify
