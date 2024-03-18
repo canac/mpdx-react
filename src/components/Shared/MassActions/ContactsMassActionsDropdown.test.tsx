@@ -4,7 +4,6 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useSession } from 'next-auth/react';
 import { SnackbarProvider } from 'notistack';
 import { GqlMockedProvider } from '__tests__/util/graphqlMocking';
 import { AppSettingsProvider } from 'src/components/common/AppSettings/AppSettingsProvider';
@@ -60,10 +59,6 @@ describe('ContactsMassActionsDropdown', () => {
       openTaskModal,
     });
     (useAccountListId as jest.Mock).mockReturnValue('123456789');
-    (useSession as jest.Mock).mockReturnValue({
-      data: { user: { apiToken: 'someToken1234' } },
-      status: 'authenticated',
-    });
 
     massDeselectAll.mockClear();
   });
@@ -84,7 +79,9 @@ describe('ContactsMassActionsDropdown', () => {
   });
 
   it('opens the more actions menu and clicks the edit fields action', async () => {
-    const { queryByTestId, queryByText } = render(<ContactComponents />);
+    const { getByRole, queryByTestId, queryByText } = render(
+      <ContactComponents />,
+    );
     expect(queryByText('Edit Fields')).not.toBeInTheDocument();
     const actionsButton = queryByText('Actions') as HTMLInputElement;
     userEvent.click(actionsButton);
@@ -93,7 +90,7 @@ describe('ContactsMassActionsDropdown', () => {
     userEvent.click(button);
     const modal = queryByTestId('EditFieldsModal') as HTMLInputElement;
     await waitFor(() => expect(modal).toBeInTheDocument());
-    userEvent.click(queryByTestId('CloseIcon') as HTMLInputElement);
+    userEvent.click(getByRole('button', { name: 'Close' }));
     await waitFor(() => expect(modal).not.toBeInTheDocument());
   });
 
