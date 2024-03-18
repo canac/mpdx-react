@@ -9,6 +9,8 @@ import { GqlMockedProvider } from '__tests__/util/graphqlMocking';
 import { AppSettingsProvider } from 'src/components/common/AppSettings/AppSettingsProvider';
 import { useAccountListId } from 'src/hooks/useAccountListId';
 import theme from 'src/theme';
+import TestRouter from '__tests__/util/TestRouter';
+import { ContactsProvider } from 'pages/accountLists/[accountListId]/contacts/ContactsContext';
 import useTaskModal from '../../../hooks/useTaskModal';
 import { TableViewModeEnum } from '../Header/ListHeader';
 import { ContactsMassActionsDropdown } from './ContactsMassActionsDropdown';
@@ -255,18 +257,31 @@ describe('ContactsMassActionsDropdown', () => {
     const selectedIdsMerge = ['abc', 'def'];
     const { getByTestId, getByText, queryByText } = render(
       <ThemeProvider theme={theme}>
-        <GqlMockedProvider>
-          <LocalizationProvider dateAdapter={AdapterLuxon}>
-            <SnackbarProvider>
-              <ContactsMassActionsDropdown
-                filterPanelOpen={false}
-                contactDetailsOpen={false}
-                contactsView={TableViewModeEnum.List}
-                selectedIds={selectedIdsMerge}
-              />
-            </SnackbarProvider>
-          </LocalizationProvider>
-        </GqlMockedProvider>
+        <TestRouter>
+          <GqlMockedProvider>
+            <LocalizationProvider dateAdapter={AdapterLuxon}>
+              <SnackbarProvider>
+                <ContactsProvider
+                  activeFilters={{}}
+                  setActiveFilters={() => {}}
+                  starredFilter={{}}
+                  setStarredFilter={() => {}}
+                  filterPanelOpen={false}
+                  setFilterPanelOpen={() => {}}
+                  contactId={[]}
+                  searchTerm={''}
+                >
+                  <ContactsMassActionsDropdown
+                    filterPanelOpen={false}
+                    contactDetailsOpen={false}
+                    contactsView={TableViewModeEnum.List}
+                    selectedIds={selectedIdsMerge}
+                  />
+                </ContactsProvider>
+              </SnackbarProvider>
+            </LocalizationProvider>
+          </GqlMockedProvider>
+        </TestRouter>
       </ThemeProvider>,
     );
     expect(queryByText('Merge')).not.toBeInTheDocument();
