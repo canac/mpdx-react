@@ -38,6 +38,7 @@ type RenderCell = GridColDef<DonationRow>['renderCell'];
 export interface DonationTableProps {
   accountListId: string;
   filter: Partial<DonationTableQueryVariables>;
+  loading?: boolean;
   onSelectContact?: (contactId: string) => void;
   visibleColumnsStorageKey: string;
   emptyPlaceholder: React.ReactElement;
@@ -120,6 +121,7 @@ const createDonationRow = (data: DonationTableRowFragment): DonationRow => ({
 export const DonationTable: React.FC<DonationTableProps> = ({
   accountListId,
   filter,
+  loading: skipped = false,
   onSelectContact,
   visibleColumnsStorageKey,
   emptyPlaceholder,
@@ -149,6 +151,7 @@ export const DonationTable: React.FC<DonationTableProps> = ({
   );
   const { data, error, loading, fetchMore } = useDonationTableQuery({
     variables,
+    skip: skipped,
   });
   // Load the rest of the pages asynchronously so that we can calculate the total donations
   useFetchAllPages({
@@ -377,9 +380,13 @@ export const DonationTable: React.FC<DonationTableProps> = ({
             </TotalsTable>
           )}
         </>
-      ) : loadingAccountListData || loading ? (
+      ) : loadingAccountListData || loading || skipped ? (
         <LoadingBox>
-          <LoadingIndicator color="primary" size={50} />
+          <LoadingIndicator
+            data-testid="LoadingBox"
+            color="primary"
+            size={50}
+          />
         </LoadingBox>
       ) : (
         emptyPlaceholder

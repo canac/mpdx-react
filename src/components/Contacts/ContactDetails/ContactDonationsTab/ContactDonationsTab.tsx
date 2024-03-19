@@ -120,6 +120,7 @@ export const ContactDonationsTab: React.FC<ContactDonationsProp> = ({
           <DonationTable
             accountListId={accountListId}
             filter={{ donorAccountIds }}
+            loading={!donorAccountIds}
             emptyPlaceholder={
               <EmptyDonationsTable
                 title={t('No donations received for {{name}}', {
@@ -132,18 +133,11 @@ export const ContactDonationsTab: React.FC<ContactDonationsProp> = ({
         </StyledTabPanel>
         <StyledTabPanel value={DonationTabKey.PartnershipInfo}>
           {loading ? (
-            <>
-              <PartnershipInfoLoadingPlaceHolder />
-              <PartnershipInfoLoadingPlaceHolder />
-              <PartnershipInfoLoadingPlaceHolder />
-              <PartnershipInfoLoadingPlaceHolder />
-              <PartnershipInfoLoadingPlaceHolder />
-              <PartnershipInfoLoadingPlaceHolder />
-              <PartnershipInfoLoadingPlaceHolder />
-              <PartnershipInfoLoadingPlaceHolder />
-              <PartnershipInfoLoadingPlaceHolder />
-              <PartnershipInfoLoadingPlaceHolder />
-            </>
+            new Array(10)
+              .fill(null)
+              .map((_, index) => (
+                <PartnershipInfoLoadingPlaceHolder key={index} />
+              ))
           ) : (
             <PartnershipInfo contact={data?.contact ?? null} />
           )}
