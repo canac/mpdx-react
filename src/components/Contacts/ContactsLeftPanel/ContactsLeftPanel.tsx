@@ -21,6 +21,7 @@ export const ContactsLeftPanel: React.FC = () => {
     selected,
     setSelected,
     viewMode,
+    handleClearAll,
   } = React.useContext(ContactsContext) as ContactsType;
 
   return viewMode === TableViewModeEnum.Map ? (
@@ -33,6 +34,7 @@ export const ContactsLeftPanel: React.FC = () => {
     />
   ) : filterData && !filtersLoading ? (
     <FilterPanel
+      handleClearAll={handleClearAll}
       filters={filterData?.accountList?.contactFilterGroups}
       savedFilters={savedFilters}
       selectedFilters={activeFilters}
