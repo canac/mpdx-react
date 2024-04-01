@@ -34,10 +34,6 @@ import {
   TaskFilterSetInput,
 } from 'src/graphql/types.generated';
 import { sanitizeFilters } from 'src/lib/sanitizeFilters';
-import {
-  ContactsContext,
-  ContactsType,
-} from '../../../../pages/accountLists/[accountListId]/contacts/ContactsContext';
 import { DeleteFilterModal } from './DeleteFilterModal/DeleteFilterModal';
 import { FilterListItem } from './FilterListItem';
 import { FilterListItemShowAll } from './FilterListItemShowAll';
@@ -158,6 +154,7 @@ type FilterInput = ContactFilterSetInput &
   ReportContactFilterSetInput;
 
 export interface FilterPanelProps {
+  handleClearAll?: () => void;
   filters: FilterPanelGroupFragment[];
   defaultExpandedFilterGroups?: Set<string>;
   savedFilters: UserOptionFragment[];
@@ -167,6 +164,7 @@ export interface FilterPanelProps {
 }
 
 export const FilterPanel: React.FC<FilterPanelProps & BoxProps> = ({
+  handleClearAll,
   filters,
   defaultExpandedFilterGroups = new Set(),
   savedFilters,
@@ -177,8 +175,6 @@ export const FilterPanel: React.FC<FilterPanelProps & BoxProps> = ({
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const { handleClearAll } = React.useContext(ContactsContext) as ContactsType;
-
   const [saveFilterModalOpen, setSaveFilterModalOpen] = useState(false);
   const [deleteFilterModalOpen, setDeleteFilterModalOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
@@ -700,7 +696,7 @@ export const FilterPanel: React.FC<FilterPanelProps & BoxProps> = ({
   };
 
   const handleClearAllClick = () => {
-    handleClearAll();
+    handleClearAll && handleClearAll();
     clearSelectedFilter();
   };
 
