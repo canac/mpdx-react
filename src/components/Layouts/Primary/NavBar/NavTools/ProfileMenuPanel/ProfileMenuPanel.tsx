@@ -3,16 +3,17 @@ import React, { useState } from 'react';
 import { useApolloClient } from '@apollo/client';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ChevronRight from '@mui/icons-material/ChevronRight';
-import { Box, Button, Drawer, Link, List } from '@mui/material';
+import { Box, Button, Drawer, List, Link as MuiLink } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { signOut } from 'next-auth/react';
 import { useTranslation } from 'react-i18next';
+import { NextLinkComposed } from 'src/components/common/Links/NextLinkComposed';
 import { clearDataDogUser } from 'src/hooks/useDataDog';
 import { useAccountListId } from '../../../../../../hooks/useAccountListId';
 import theme from '../../../../../../theme';
 import HandoffLink from '../../../../../HandoffLink';
 import { useGetTopBarQuery } from '../../../TopBar/GetTopBar.generated';
-import { LeafButton, LeafListItem, Title } from '../../NavItem/NavItem';
+import { LeafListItem, Title } from '../../NavItem/NavItem';
 
 type ProfileMenuContent = {
   text: string;
@@ -57,27 +58,34 @@ export const ProfileMenuPanel: React.FC = () => {
   const addProfileContent: ProfileMenuContent[] = [
     {
       text: 'Preferences',
-      path: '/preferences/personal',
+      path: '/settings/preferences',
     },
     {
       text: 'Notifications',
-      path: '/preferences/notifications',
+      path: '/settings/notifications',
     },
     {
       text: 'Connect Services',
-      path: '/preferences/integrations',
+      path: '/settings/integrations',
     },
     {
       text: 'Manage Accounts',
-      path: '/preferences/accounts',
+      path: '/settings/manageAccounts',
     },
     {
       text: 'Manage Coaches',
-      path: '/preferences/coaches',
+      path: '/settings/manageCoaches',
     },
   ];
 
-  const style = { paddingLeft: 40, paddingTop: 11, paddingBottom: 11 };
+  const style = {
+    color: theme.palette.text.secondary,
+    padding: '11px 8px 11px 40px',
+    justifyContent: 'flex-start',
+    textTransform: 'none' as any,
+    letterSpacing: 0,
+    width: '100%',
+  };
   const accountListStyle = {
     paddingLeft: theme.spacing(2),
     paddingTop: 11,
@@ -93,7 +101,7 @@ export const ProfileMenuPanel: React.FC = () => {
             disableGutters
             onClick={toggleAccountsDrawer}
           >
-            <LeafButton style={style}>
+            <Button style={style}>
               <Title
                 style={{
                   whiteSpace: 'nowrap',
@@ -109,7 +117,7 @@ export const ProfileMenuPanel: React.FC = () => {
                 }
               </Title>
               <ChevronRight />
-            </LeafButton>
+            </Button>
           </LeafListItem>
           <MobileDrawer
             anchor="left"
@@ -121,12 +129,12 @@ export const ProfileMenuPanel: React.FC = () => {
               disableGutters
               onClick={toggleAccountsDrawer}
             >
-              <LeafButton style={accountListStyle}>
+              <Button style={accountListStyle}>
                 <ArrowBackIcon
                   style={{ color: 'white', marginRight: theme.spacing(2) }}
                 />
                 <Title>{t('Account List Selector')}</Title>
-              </LeafButton>
+              </Button>
             </LeafListItem>
             {data?.accountLists.nodes.map((accountList) => (
               <LeafListItemHover
@@ -141,9 +149,9 @@ export const ProfileMenuPanel: React.FC = () => {
                 }}
                 onClick={() => changeAccountListId(accountList.id)}
               >
-                <LeafButton style={accountListStyle}>
+                <Button style={accountListStyle}>
                   <Title>{accountList.name}</Title>
-                </LeafButton>
+                </Button>
               </LeafListItemHover>
             ))}
           </MobileDrawer>
@@ -151,47 +159,53 @@ export const ProfileMenuPanel: React.FC = () => {
       )}
       {addProfileContent.map(({ text, path, onClick }, index) => (
         <LeafListItem key={index} disableGutters onClick={onClick}>
-          <HandoffLink path={path}>
-            <LeafButton style={style}>
-              <Title>{t(text)}</Title>
-            </LeafButton>
-          </HandoffLink>
+          <Button
+            style={style}
+            component={NextLinkComposed}
+            to={`/accountLists/${accountListId}/${path}`}
+          >
+            <Title>{t(text)}</Title>
+          </Button>
         </LeafListItem>
       ))}
       {(data?.user?.admin ||
         !!data?.user?.administrativeOrganizations?.nodes?.length) && (
         <LeafListItem disableGutters>
-          <HandoffLink path="/preferences/organizations">
-            <LeafButton style={style}>
-              <Title>{t('Manage Organizations')}</Title>
-            </LeafButton>
-          </HandoffLink>
+          <Button
+            style={style}
+            component={NextLinkComposed}
+            to={`/accountLists/${accountListId}/settings/organizations`}
+          >
+            <Title>{t('Manage Organizations')}</Title>
+          </Button>
         </LeafListItem>
       )}
       {(data?.user?.admin || data?.user?.developer) && (
         <LeafListItem disableGutters>
-          <HandoffLink path="/preferences/admin">
-            <LeafButton style={style}>
-              <Title>{t('Admin Console')}</Title>
-            </LeafButton>
-          </HandoffLink>
+          <Button
+            style={style}
+            component={NextLinkComposed}
+            to={`/accountLists/${accountListId}/settings/admin`}
+          >
+            <Title>{t('Admin Console')}</Title>
+          </Button>
         </LeafListItem>
       )}
       {data?.user?.developer && (
         <LeafListItem disableGutters>
           <HandoffLink path="/auth/user/admin">
-            <LeafButton style={style}>
+            <Button style={style}>
               <Title>{t('Backend Admin')}</Title>
-            </LeafButton>
+            </Button>
           </HandoffLink>
         </LeafListItem>
       )}
       {data?.user?.developer && (
         <LeafListItem disableGutters>
           <HandoffLink path="/auth/user/sidekiq">
-            <LeafButton style={style}>
+            <Button style={style}>
               <Title>{t('Sidekiq')}</Title>
-            </LeafButton>
+            </Button>
           </HandoffLink>
         </LeafListItem>
       )}
@@ -210,23 +224,23 @@ export const ProfileMenuPanel: React.FC = () => {
             {t('Sign Out')}
           </Button>
           <Box display="flex" justifyContent="center" py={1}>
-            <Link
+            <MuiLink
               href="https://get.mpdx.org/privacy-policy/"
               target="_blank"
               color="secondary"
               variant="caption"
             >
               {t('Privacy Policy')}
-            </Link>
+            </MuiLink>
             &nbsp; • &nbsp;
-            <Link
+            <MuiLink
               href="https://get.mpdx.org/terms-of-use/"
               target="_blank"
               color="secondary"
               variant="caption"
             >
               {t('Terms of Use')}
-            </Link>
+            </MuiLink>
           </Box>
         </Box>
       </LeafListItem>
