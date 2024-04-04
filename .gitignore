@@ -60,3 +60,6 @@ build-storybook.log
 
 # GraphQL
 graphql-digest.txt
+
+# Lighthouse
+.lighthouseci
