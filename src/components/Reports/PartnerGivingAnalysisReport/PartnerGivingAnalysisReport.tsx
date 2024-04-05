@@ -73,11 +73,15 @@ export const PartnerGivingAnalysisReport = forwardRef<
     const [query, setQuery] = useState<string>('');
     const search = useDebouncedValue(query, 500);
 
-    useImperativeHandle(ref, () => ({
-      clearSearchInput() {
-        setQuery('');
-      },
-    }));
+    useImperativeHandle(
+      ref,
+      () => ({
+        clearSearchInput() {
+          setQuery('');
+        },
+      }),
+      [],
+    );
 
     const contactFilters: ReportContactFilterSetInput = {
       ...(filters && sanitizeFilters(filters)),
@@ -238,4 +242,3 @@ export const PartnerGivingAnalysisReport = forwardRef<
 );
 
 PartnerGivingAnalysisReport.displayName = 'PartnerGivingAnalysisReport';
-export default PartnerGivingAnalysisReport;

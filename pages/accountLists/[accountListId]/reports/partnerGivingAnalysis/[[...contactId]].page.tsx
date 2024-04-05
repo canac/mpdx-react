@@ -42,7 +42,7 @@ const PartnerGivingAnalysisReportPage: React.FC = () => {
   const accountListId = useAccountListId();
   const { appName } = useGetAppSettings();
   const [panelOpen, setPanelOpen] = useState<Panel | null>(null);
-  const childRef = useRef<PartnerGivingAnalysisReportRef>(null);
+  const reportRef = useRef<PartnerGivingAnalysisReportRef>(null);
 
   const router = useRouter();
   const selectedContactId = getQueryParam(router.query, 'contactId');
@@ -98,7 +98,7 @@ const PartnerGivingAnalysisReportPage: React.FC = () => {
   };
 
   const handleClearSearch = () => {
-    childRef?.current?.clearSearchInput();
+    reportRef?.current?.clearSearchInput();
   };
 
   return (
@@ -151,7 +151,7 @@ const PartnerGivingAnalysisReportPage: React.FC = () => {
           leftWidth="290px"
           mainContent={
             <PartnerGivingAnalysisReport
-              ref={childRef}
+              ref={reportRef}
               accountListId={accountListId}
               activeFilters={activeFilters}
               panelOpen={panelOpen}
