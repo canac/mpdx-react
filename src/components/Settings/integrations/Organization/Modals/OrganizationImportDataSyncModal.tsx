@@ -35,13 +35,6 @@ export const validateFile = ({
       ),
     };
   }
-  if (file.size > 100_000_000) {
-    return {
-      success: false,
-      message: t('Cannot upload file: file size cannot exceed 100MB'),
-    };
-  }
-
   return { success: true };
 };
 
