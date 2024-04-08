@@ -36,7 +36,13 @@ export const returnRedirectUrl = async (req: NextApiRequest) => {
     }
     const userId = req.query.userId || jwtToken.userID;
 
-    const url = new URL(`https://${process.env.REWRITE_DOMAIN}/handoff`);
+    let hypertextTransferProtocol = 'https';
+    if (process.env.REWRITE_DOMAIN?.includes('localhost')) {
+      hypertextTransferProtocol = 'http';
+    }
+    const url = new URL(
+      `${hypertextTransferProtocol}://${process.env.REWRITE_DOMAIN}/handoff`,
+    );
 
     url.searchParams.append('accessToken', jwtToken.apiToken);
     url.searchParams.append('accountListId', defaultAccountID.toString());
