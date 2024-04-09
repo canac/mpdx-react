@@ -12,10 +12,10 @@ const rollbar = new Rollbar({
   enabled: isRollBarEnabled,
 });
 
-export const logErrorOnRollbar = (error: Error | unknown, page: string) => {
+export const logErrorOnRollbar = (error: unknown, page: string) => {
   if (isRollBarEnabled) {
     const errorMsg = getErrorMessage(error);
-    const errorMetaData = error ? error : {};
+    const errorMetaData = error ?? {};
     rollbar.error(`${page} - ${errorMsg}`, errorMetaData);
   }
 };
