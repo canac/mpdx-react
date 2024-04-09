@@ -98,7 +98,7 @@ const PartnerGivingAnalysisReportPage: React.FC = () => {
   };
 
   const handleClearSearch = () => {
-    reportRef?.current?.clearSearchInput();
+    reportRef.current?.clearSearchInput();
   };
 
   return (

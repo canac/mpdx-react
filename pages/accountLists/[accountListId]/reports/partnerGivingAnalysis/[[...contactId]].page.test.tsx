@@ -53,8 +53,20 @@ const TestingComponent: React.FC<TestingComponentProps> = ({
           {
             filters: [
               {
-                __typename: 'TextFilter' as const,
+                __typename: 'MultiselectFilter' as const,
                 filterKey: 'designation_account_id',
+                title: 'Designation Account',
+                defaultSelection: '',
+                options: [
+                  {
+                    name: 'Designation Account 1',
+                    __typename: 'FilterOption' as const,
+                  },
+                  {
+                    name: 'Designation Account 2',
+                    __typename: 'FilterOption' as const,
+                  },
+                ],
               },
             ],
           },
@@ -154,13 +166,17 @@ describe('partnerGivingAnalysis page', () => {
   });
 
   it('calls clearSearchInput', async () => {
-    const { getByRole } = render(
+    const { findByRole, getByRole, getByPlaceholderText } = render(
       <TestingComponent routerContactId={'contact-1'} />,
     );
-    const useRefSpy = jest
-      .spyOn(React, 'useRef')
-      .mockReturnValueOnce({ current: { clearSearchInput: jest.fn() } });
+    const searchBar = getByPlaceholderText('Search Contacts');
+    userEvent.type(searchBar, 'John');
     userEvent.click(getByRole('button', { name: 'Toggle Filter Panel' }));
-    expect(useRefSpy).toHaveBeenCalled();
+    userEvent.click(
+      await findByRole('combobox', { name: 'Designation Account' }),
+    );
+    userEvent.click(getByRole('option', { name: 'Designation Account 1' }));
+    userEvent.click(getByRole('button', { name: 'Clear All' }));
+    expect(searchBar).toHaveValue('');
   });
 });
