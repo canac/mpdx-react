@@ -118,7 +118,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   } catch (error) {
-    logErrorOnRollbar(error, '[accountlistid].page');
+    logErrorOnRollbar(error, '/accountLists/[accountListId].page');
     return {
       redirect: {
         destination: '/',

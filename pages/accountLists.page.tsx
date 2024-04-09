@@ -77,7 +77,7 @@ export const getServerSideProps: GetServerSideProps = async (
       },
     };
   } catch (error) {
-    logErrorOnRollbar(error, 'accountLists.page');
+    logErrorOnRollbar(error, '/accountLists.page');
     throw error;
   }
 };
