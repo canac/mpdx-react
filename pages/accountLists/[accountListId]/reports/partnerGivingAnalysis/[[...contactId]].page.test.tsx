@@ -1,3 +1,4 @@
+import React from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -150,5 +151,16 @@ describe('partnerGivingAnalysis page', () => {
     expect(push).toHaveBeenCalledWith(
       '/accountLists/account-list-1/reports/partnerGivingAnalysis/',
     );
+  });
+
+  it('calls clearSearchInput', async () => {
+    const { getByRole } = render(
+      <TestingComponent routerContactId={'contact-1'} />,
+    );
+    const useRefSpy = jest
+      .spyOn(React, 'useRef')
+      .mockReturnValueOnce({ current: { clearSearchInput: jest.fn() } });
+    userEvent.click(getByRole('button', { name: 'Toggle Filter Panel' }));
+    expect(useRefSpy).toHaveBeenCalled();
   });
 });
