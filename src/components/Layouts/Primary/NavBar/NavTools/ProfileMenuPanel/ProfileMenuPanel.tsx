@@ -35,6 +35,43 @@ const LeafListItemHover = styled(LeafListItem)(() => ({
   },
 }));
 
+const style = {
+  color: theme.palette.text.secondary,
+  padding: '11px 8px 11px 40px',
+  justifyContent: 'flex-start',
+  textTransform: 'none' as any,
+  letterSpacing: 0,
+  width: '100%',
+};
+const accountListStyle = {
+  paddingLeft: theme.spacing(2),
+  paddingTop: 11,
+  paddingBottom: 11,
+};
+
+const addProfileContent: ProfileMenuContent[] = [
+  {
+    text: 'Preferences',
+    path: '/settings/preferences',
+  },
+  {
+    text: 'Notifications',
+    path: '/settings/notifications',
+  },
+  {
+    text: 'Connect Services',
+    path: '/settings/integrations',
+  },
+  {
+    text: 'Manage Accounts',
+    path: '/settings/manageAccounts',
+  },
+  {
+    text: 'Manage Coaches',
+    path: '/settings/manageCoaches',
+  },
+];
+
 export const ProfileMenuPanel: React.FC = () => {
   const { t } = useTranslation();
   const { data } = useGetTopBarQuery();
@@ -53,43 +90,6 @@ export const ProfileMenuPanel: React.FC = () => {
       pathname: accountListId ? pathname : '/accountLists/[accountListId]/',
       query: { accountListId: id },
     });
-  };
-
-  const addProfileContent: ProfileMenuContent[] = [
-    {
-      text: 'Preferences',
-      path: '/settings/preferences',
-    },
-    {
-      text: 'Notifications',
-      path: '/settings/notifications',
-    },
-    {
-      text: 'Connect Services',
-      path: '/settings/integrations',
-    },
-    {
-      text: 'Manage Accounts',
-      path: '/settings/manageAccounts',
-    },
-    {
-      text: 'Manage Coaches',
-      path: '/settings/manageCoaches',
-    },
-  ];
-
-  const style = {
-    color: theme.palette.text.secondary,
-    padding: '11px 8px 11px 40px',
-    justifyContent: 'flex-start',
-    textTransform: 'none' as any,
-    letterSpacing: 0,
-    width: '100%',
-  };
-  const accountListStyle = {
-    paddingLeft: theme.spacing(2),
-    paddingTop: 11,
-    paddingBottom: 11,
   };
 
   return (
