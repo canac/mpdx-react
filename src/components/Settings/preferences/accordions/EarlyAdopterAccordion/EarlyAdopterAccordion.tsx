@@ -58,7 +58,13 @@ export const EarlyAdopterAccordion: React.FC<EarlyAdopterAccordionProps> = ({
         handleAccordionChange(label);
 
         if (!attributes.tester) {
-          // Redirect back to old MPDx when early adopter is switched off
+          enqueueSnackbar(
+            t('Redirecting you back to the old MPDx application.'),
+            {
+              variant: 'success',
+            },
+          );
+
           const url = new URL(
             `${process.env.SITE_URL || window.location.origin}/api/handoff`,
           );

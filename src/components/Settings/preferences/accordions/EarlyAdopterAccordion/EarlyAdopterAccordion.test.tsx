@@ -123,43 +123,46 @@ describe('EarlyAdopterAccordion', () => {
     });
   });
 
-  it('sets early adopter to true and does not redirect user', async () => {
-    process.env.SITE_URL = 'https://next.mpdx.org';
-    window.location.href = process.env.SITE_URL;
-    const { getByRole } = render(
-      <Components tester={false} expandedPanel={label} />,
-    );
-    const button = getByRole('button', { name: 'Save' });
-    userEvent.click(getByRole('checkbox'));
-    userEvent.click(button);
+  describe('onSubmit()', () => {
+    beforeEach(() => {
+      process.env.SITE_URL = 'https://next.mpdx.org';
+      window.location.href = process.env.SITE_URL;
+    });
 
-    await waitFor(() =>
-      expect(mockEnqueue).toHaveBeenCalledWith('Saved successfully.', {
-        variant: 'success',
-      }),
-    );
+    it('sets early adopter to true and does not redirect user', async () => {
+      const { getByRole } = render(
+        <Components tester={false} expandedPanel={label} />,
+      );
+      const button = getByRole('button', { name: 'Save' });
+      userEvent.click(getByRole('checkbox'));
+      userEvent.click(button);
 
-    expect(window.location.href).toEqual(process.env.SITE_URL);
-  });
+      await waitFor(() =>
+        expect(mockEnqueue).toHaveBeenCalledWith('Saved successfully.', {
+          variant: 'success',
+        }),
+      );
 
-  it('sets early adopter to false and redirects user to old MPDx', async () => {
-    process.env.SITE_URL = 'https://next.mpdx.org';
-    window.location.href = process.env.SITE_URL;
-    const { getByRole } = render(
-      <Components tester={true} expandedPanel={label} />,
-    );
-    const button = getByRole('button', { name: 'Save' });
-    userEvent.click(getByRole('checkbox'));
-    userEvent.click(button);
+      expect(window.location.href).toEqual(process.env.SITE_URL);
+    });
 
-    await waitFor(() =>
-      expect(mockEnqueue).toHaveBeenCalledWith('Saved successfully.', {
-        variant: 'success',
-      }),
-    );
+    it('sets early adopter to false and redirects user to old MPDx', async () => {
+      const { getByRole } = render(
+        <Components tester={true} expandedPanel={label} />,
+      );
+      const button = getByRole('button', { name: 'Save' });
+      userEvent.click(getByRole('checkbox'));
+      userEvent.click(button);
 
-    expect(window.location.href).toEqual(
-      `${process.env.SITE_URL}/api/handoff?accountListId=${accountListId}&userId=${session.user.userID}&path=%2Fpreferences%2Fpersonal`,
-    );
+      await waitFor(() =>
+        expect(mockEnqueue).toHaveBeenCalledWith('Saved successfully.', {
+          variant: 'success',
+        }),
+      );
+
+      expect(window.location.href).toEqual(
+        `${process.env.SITE_URL}/api/handoff?accountListId=${accountListId}&userId=${session.user.userID}&path=%2Fpreferences%2Fpersonal`,
+      );
+    });
   });
 });
