@@ -159,3 +159,8 @@ jobs:
         with:
           name: lighthouse-results
           path: lighthouse-results.md
+      - name: Make a PR Comment
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          filePath: lighthouse-results.md
+          comment_tag: lighthouse
