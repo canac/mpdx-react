@@ -63,3 +63,4 @@ graphql-digest.txt
 
 # Lighthouse
 .lighthouseci
+lighthouse-results.md
