@@ -140,7 +140,7 @@ async function storeResults(result) {
     }
   });
 
-  let markdownResults = `## ${result.lhr.finalDisplayedUrl}\n**Overall Scores:** ${overallScores}\n\n`;
+  let markdownResults = `## ${result.lhr.finalDisplayedUrl}\n<details><summary>Scores</summary>\n**Overall Scores:** ${overallScores}\n\n`;
 
   // Output the result.
   console.log(`Lighthouse scores: ${overallScores}`);
@@ -153,6 +153,7 @@ async function storeResults(result) {
     }
     markdownResults += `**${vital.title}:** ${vital.displayValue}\n\n`;
   });
+  markdownResults += '</details>\n\n';
 
   fs.appendFile('lighthouse-results.md', markdownResults);
 }
