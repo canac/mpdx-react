@@ -1,16 +1,6 @@
-let serverUrl = 'http://localhost:3000';
-if (process.env.GITHUB_HEAD_REF) {
-  // This is a pull request workflow
-  if (process.env.PREVIEW_URL) {
-    serverUrl = process.env.PREVIEW_URL;
-  }
-} else {
-  if (process.env.GITHUB_REF_NAME === 'staging') {
-    serverUrl = 'https://next-stage.mpdx.org';
-  } else if (process.env.GITHUB_REF_NAME === 'main') {
-    serverUrl = 'https://next.mpdx.org';
-  }
-}
+const { getOrigin } = require('./lighthouse-origin');
+
+const serverUrl = getOrigin();
 
 module.exports = {
   ci: {

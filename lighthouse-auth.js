@@ -2,12 +2,18 @@
 
 /* eslint-disable no-console */
 
+const { getOrigin } = require('./lighthouse-origin');
+
 /**
  * @param {puppeteer.Page} page
  * @param {string} origin
  */
 async function login(page, origin) {
-  await page.goto(origin);
+  if (process.env.PREVIEW_URL) {
+    loadInitialPage();
+  } else {
+    await page.goto(origin);
+  }
 
   let signInButton;
   try {
@@ -29,6 +35,7 @@ async function login(page, origin) {
   try {
     await loginToOkta(page);
   } catch (error) {
+    // Sometimes the login to Okta fails for some reason and puts us back on the /login page of MPDx, so try again.
     try {
       signInButton = await page.$('#sign-in-button', { timeout: 5000 });
 
@@ -46,6 +53,22 @@ async function login(page, origin) {
       console.log(' Did not find signInButton', error);
       return;
     }
+  }
+}
+
+async function loadInitialPage() {
+  const originResponse = await page.goto(origin);
+
+  const initialLoadId = setInterval(async () => {
+    if (originResponse.status && originResponse.status !== 404) {
+      return;
+    } else {
+      await page.goto(origin);
+    }
+  }, 60_000);
+
+  if (originResponse.status && originResponse.status !== 404) {
+    clearInterval(initialLoadId);
   }
 }
 
@@ -76,20 +99,7 @@ async function main(browser, requestedUrl) {
   const page = await browser.newPage();
 
   // Setup the browser session to be logged into our site.
-  let origin = 'http://localhost:3000';
-  if (process.env.GITHUB_HEAD_REF) {
-    // This is a pull request workflow
-    if (process.env.PREVIEW_URL) {
-      origin = process.env.PREVIEW_URL;
-    }
-  } else {
-    if (process.env.GITHUB_REF_NAME === 'staging') {
-      origin = 'https://next-stage.mpdx.org';
-    } else if (process.env.GITHUB_REF_NAME === 'main') {
-      origin = 'https://next.mpdx.org';
-    }
-  }
-  await login(page, origin);
+  await login(page, getOrigin());
 
   // Direct Lighthouse to use the same Puppeteer page.
   // Disable storage reset so login session is preserved.
@@ -132,7 +142,6 @@ async function storeResults(result) {
   let markdownResults = `## ${result.lhr.finalDisplayedUrl}\n**Overall Scores:** ${overallScores}\n\n`;
 
   // Output the result.
-  // console.log(JSON.stringify(result.lhr, null, 2));
   console.log(`Lighthouse scores: ${overallScores}`);
   coreWebVitalScores.forEach((vital) => {
     console.log(`${vital.title}: ${vital.displayValue}`);
