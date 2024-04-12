@@ -154,11 +154,6 @@ jobs:
           MPDX_USERNAME: ${{ secrets.MPDX_USERNAME }}
           MPDX_PASSWORD: ${{ secrets.MPDX_PASSWORD }}
           PREVIEW_URL: 'https://pr-${{ github.event.number }}.d3dytjb8adxkk5.amplifyapp.com'
-      - name: Upload lighthouse results (basic)
-        uses: actions/upload-artifact@v4
-        with:
-          name: lighthouse-results
-          path: lighthouse-results.md
       - name: Make a PR Comment
         uses: thollander/actions-comment-pull-request@v2
         with:
