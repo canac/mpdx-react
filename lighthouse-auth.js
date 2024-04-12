@@ -76,7 +76,19 @@ async function main(browser, requestedUrl) {
   const page = await browser.newPage();
 
   // Setup the browser session to be logged into our site.
-  const origin = process.env.PREVIEW_URL ?? 'http://localhost:3000';
+  let origin = 'http://localhost:3000';
+  if (process.env.GITHUB_HEAD_REF) {
+    // This is a pull request workflow
+    if (process.env.PREVIEW_URL) {
+      origin = process.env.PREVIEW_URL;
+    }
+  } else {
+    if (process.env.GITHUB_REF_NAME === 'staging') {
+      origin = 'https://next-stage.mpdx.org';
+    } else if (process.env.GITHUB_REF_NAME === 'main') {
+      origin = 'https://next.mpdx.org';
+    }
+  }
   await login(page, origin);
 
   // Direct Lighthouse to use the same Puppeteer page.
