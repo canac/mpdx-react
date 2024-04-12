@@ -29,6 +29,7 @@ async function login(page, origin) {
   try {
     await loginToOkta(page);
   } catch (error) {
+    // Sometimes the login to Okta fails for some reason and puts us back on the /login page of MPDx, so try again.
     try {
       signInButton = await page.$('#sign-in-button', { timeout: 5000 });
 
@@ -132,7 +133,6 @@ async function storeResults(result) {
   let markdownResults = `## ${result.lhr.finalDisplayedUrl}\n**Overall Scores:** ${overallScores}\n\n`;
 
   // Output the result.
-  // console.log(JSON.stringify(result.lhr, null, 2));
   console.log(`Lighthouse scores: ${overallScores}`);
   coreWebVitalScores.forEach((vital) => {
     console.log(`${vital.title}: ${vital.displayValue}`);
