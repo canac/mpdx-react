@@ -155,6 +155,7 @@ jobs:
           MPDX_PASSWORD: ${{ secrets.MPDX_PASSWORD }}
           PREVIEW_URL: 'https://pr-${{ github.event.number }}.d3dytjb8adxkk5.amplifyapp.com'
       - name: Make a PR Comment
+        if: ${{ github.event_name == 'pull_request' }}
         uses: thollander/actions-comment-pull-request@v2
         with:
           filePath: lighthouse-results.md
