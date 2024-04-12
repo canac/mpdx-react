@@ -9,7 +9,11 @@ const { getOrigin } = require('./lighthouse-origin');
  * @param {string} origin
  */
 async function login(page, origin) {
-  await page.goto(origin);
+  if (process.env.PREVIEW_URL) {
+    loadInitialPage();
+  } else {
+    await page.goto(origin);
+  }
 
   let signInButton;
   try {
@@ -49,6 +53,22 @@ async function login(page, origin) {
       console.log(' Did not find signInButton', error);
       return;
     }
+  }
+}
+
+async function loadInitialPage() {
+  const originResponse = await page.goto(origin);
+
+  const initialLoadId = setInterval(async () => {
+    if (originResponse.status && originResponse.status !== 404) {
+      return;
+    } else {
+      await page.goto(origin);
+    }
+  }, 60_000);
+
+  if (originResponse.status && originResponse.status !== 404) {
+    clearInterval(initialLoadId);
   }
 }
 
