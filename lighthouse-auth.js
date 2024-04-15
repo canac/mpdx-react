@@ -140,22 +140,24 @@ async function storeResults(result) {
     }
   });
 
-  let markdownResults = `## ${result.lhr.finalDisplayedUrl}\n<details><summary>Scores</summary>\n**Overall Scores:** ${overallScores}\n\n`;
+  let markdownResults = `${result.lhr.finalDisplayedUrl}\n<details><summary>Scores</summary>\n\n* **Overall Scores:** ${overallScores}\n`;
 
   // Output the result.
   console.log(`Lighthouse scores: ${overallScores}`);
+
+  let markdownWarning = '';
   coreWebVitalScores.forEach((vital) => {
     console.log(`${vital.title}: ${vital.displayValue}`);
     if (vital.numericValue > vital.badThreshold) {
-      markdownResults += `> [!CAUTION]\n > `;
+      markdownWarning = `> [!CAUTION]\n > `;
     } else if (vital.numericValue > vital.goodThreshold) {
-      markdownResults += `> [!WARNING]\n > `;
+      markdownWarning = markdownWarning ?? `> [!WARNING]\n > `;
     }
-    markdownResults += `**${vital.title}:** ${vital.displayValue}\n\n`;
+    markdownResults += `* **${vital.title}:** ${vital.displayValue}\n`;
   });
   markdownResults += '</details>\n\n';
 
-  fs.appendFile('lighthouse-results.md', markdownResults);
+  fs.appendFile('lighthouse-results.md', markdownWarning + markdownResults);
 }
 
 module.exports = async (browser, context) => {
