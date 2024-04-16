@@ -36,7 +36,7 @@ const customJestConfig = {
   collectCoverageFrom: [
     '{src,pages}/**/*.{js,jsx,ts,tsx}',
     '__tests__/util/extensions/**/*.{js,jsx,ts,tsx}',
-    'lighthouse/**/*.{js,mjs}',
+    'lighthouse/**/*.mjs',
     '!pages/api/**',
     '!**/*.generated.ts',
     '!**/*.mock.*',

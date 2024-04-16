@@ -65,14 +65,6 @@ describe('Lighthouse Pre-Login Steps', () => {
 
   describe('main', () => {
     it('should write the results to a file', async () => {
-      const initialResponse = {
-        status: 200,
-      };
-
-      initialPage.goto.mockImplementation(() => {
-        return Promise.resolve(initialResponse);
-      });
-
       successfulTestMock();
 
       await main(
@@ -83,19 +75,144 @@ describe('Lighthouse Pre-Login Steps', () => {
       );
       expect(fs.appendFile).toHaveBeenCalledTimes(1);
     });
+
+    it('should try finding the sign in button twice', async () => {
+      successfulTestMock();
+
+      initialPage.waitForSelector
+        .mockImplementationOnce((selector) => {
+          if (selector === '#okta-signin-username') {
+            return Promise.reject('could not find element');
+          }
+          return Promise.resolve({});
+        })
+        .mockImplementationOnce((selector) => {
+          if (selector === '#okta-signin-username') {
+            return Promise.resolve({
+              click: jest.fn(),
+            });
+          }
+          return Promise.resolve({});
+        });
+
+      await main(
+        mockLighthouse,
+        browser,
+        'http://localhost:3000/accountLists',
+        'http://localhost:3000',
+      );
+      expect(initialPage.$).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not break if the sign in button is not found', async () => {
+      successfulTestMock();
+
+      initialPage.$.mockImplementationOnce((selector) => {
+        if (selector === '#sign-in-button') {
+          return Promise.reject('could not find element');
+        }
+        return Promise.resolve({});
+      });
+
+      await main(
+        mockLighthouse,
+        browser,
+        'http://localhost:3000/accountLists',
+        'http://localhost:3000',
+      );
+
+      expect(initialPage.waitForNavigation).not.toHaveBeenCalled();
+      expect(fs.appendFile).toHaveBeenCalled();
+    });
+
+    it('should not break if the sign in button returns null', async () => {
+      successfulTestMock();
+
+      initialPage.$.mockImplementationOnce((selector) => {
+        if (selector === '#sign-in-button') {
+          return Promise.resolve(null);
+        }
+        return Promise.resolve({});
+      });
+
+      await main(
+        mockLighthouse,
+        browser,
+        'http://localhost:3000/accountLists',
+        'http://localhost:3000',
+      );
+
+      expect(initialPage.waitForNavigation).not.toHaveBeenCalled();
+      expect(fs.appendFile).toHaveBeenCalled();
+    });
+
+    it('should not break if the sign in button is not found the second time', async () => {
+      successfulTestMock();
+
+      initialPage.$.mockImplementationOnce((selector) => {
+        if (selector === '#sign-in-button') {
+          return Promise.resolve({
+            click: jest.fn(),
+          });
+        }
+        return Promise.resolve({});
+      }).mockImplementationOnce((selector) => {
+        if (selector === '#sign-in-button') {
+          return Promise.reject('could not find element');
+        }
+        return Promise.resolve({});
+      });
+
+      initialPage.waitForSelector.mockImplementation((selector) => {
+        if (selector === '#okta-signin-username') {
+          return Promise.reject('could not find element');
+        }
+        return Promise.resolve({});
+      });
+
+      await main(
+        mockLighthouse,
+        browser,
+        'http://localhost:3000/accountLists',
+        'http://localhost:3000',
+      );
+
+      expect(initialPage.waitForNavigation).toHaveBeenCalledTimes(1);
+      expect(fs.appendFile).toHaveBeenCalled();
+    });
+
+    it('should add formatting to bad scores', async () => {
+      successfulTestMock();
+
+      const badPerformanceResult = { ...successResult };
+      badPerformanceResult.lhr.audits[
+        'largest-contentful-paint'
+      ].numericValue = 2600;
+      badPerformanceResult.lhr.audits[
+        'cumulative-layout-shift'
+      ].numericValue = 0.3;
+
+      mockLighthouse.default.mockImplementation(() => {
+        return Promise.resolve(badPerformanceResult);
+      });
+
+      await main(
+        mockLighthouse,
+        browser,
+        'http://localhost:3000/accountLists',
+        'http://localhost:3000',
+      );
+
+      expect(fs.appendFile).toHaveBeenCalledWith(
+        './lighthouse/lighthouse-results.md',
+        expect.stringContaining('[!CAUTION]'),
+      );
+    });
   });
 
   describe('loadInitialPage', () => {
     it('should load the initial page right away', async () => {
       process.env.PREVIEW_URL = previewUrl;
-      const initialResponse = {
-        status: 200,
-      };
-
-      initialPage.goto.mockImplementation(() => {
-        return Promise.resolve(initialResponse);
-      });
-
       successfulTestMock();
 
       await loadInitialPage(initialPage, `${previewUrl}/accountLists`, 500);
@@ -103,6 +220,8 @@ describe('Lighthouse Pre-Login Steps', () => {
     });
 
     it('should wait until the page is available', async () => {
+      successfulTestMock();
+
       process.env.PREVIEW_URL = previewUrl;
       const initialResponse = {
         status: 404,
@@ -116,14 +235,20 @@ describe('Lighthouse Pre-Login Steps', () => {
           return Promise.resolve({ status: 200 });
         });
 
-      successfulTestMock();
-
       await loadInitialPage(initialPage, `${previewUrl}/accountLists`, 500);
       expect(initialPage.goto).toHaveBeenCalledTimes(2);
     });
   });
 
   const successfulTestMock = () => {
+    const initialResponse = {
+      status: 200,
+    };
+
+    initialPage.goto.mockImplementation(() => {
+      return Promise.resolve(initialResponse);
+    });
+
     initialPage.$.mockImplementation((selector) => {
       if (selector === '#sign-in-button') {
         return Promise.resolve({
