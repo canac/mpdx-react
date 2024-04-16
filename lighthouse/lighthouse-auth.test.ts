@@ -105,32 +105,19 @@ describe('Lighthouse Pre-Login Steps', () => {
     });
 
     it('should not break if the sign in button is not found', async () => {
-      successfulTestMock();
-
-      initialPage.$.mockImplementationOnce((selector) => {
-        if (selector === '#sign-in-button') {
-          return Promise.reject('could not find element');
-        }
-        return Promise.resolve({});
-      });
-
-      await main(
-        mockLighthouse,
-        browser,
-        'http://localhost:3000/accountLists',
-        'http://localhost:3000',
-      );
-
-      expect(initialPage.waitForNavigation).not.toHaveBeenCalled();
-      expect(fs.appendFile).toHaveBeenCalled();
+      await testMissingSignInButton(Promise.reject('could not find element'));
     });
 
     it('should not break if the sign in button returns null', async () => {
+      await testMissingSignInButton(Promise.resolve(null));
+    });
+
+    const testMissingSignInButton = async (promiseResponse) => {
       successfulTestMock();
 
       initialPage.$.mockImplementationOnce((selector) => {
         if (selector === '#sign-in-button') {
-          return Promise.resolve(null);
+          return promiseResponse;
         }
         return Promise.resolve({});
       });
@@ -144,7 +131,7 @@ describe('Lighthouse Pre-Login Steps', () => {
 
       expect(initialPage.waitForNavigation).not.toHaveBeenCalled();
       expect(fs.appendFile).toHaveBeenCalled();
-    });
+    };
 
     it('should not break if the sign in button is not found the second time', async () => {
       successfulTestMock();
