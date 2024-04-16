@@ -54,7 +54,7 @@ describe('Lighthouse Pre-Login Steps', () => {
     },
   };
 
-  const mockLighthouse = jest.fn();
+  const mockLighthouse = { default: jest.fn() };
 
   beforeEach(() => {
     jest.resetModules();
@@ -151,7 +151,7 @@ describe('Lighthouse Pre-Login Steps', () => {
       return Promise.resolve(element);
     });
 
-    mockLighthouse.mockImplementation(() => {
+    mockLighthouse.default.mockImplementation(() => {
       return Promise.resolve(successResult);
     });
   };

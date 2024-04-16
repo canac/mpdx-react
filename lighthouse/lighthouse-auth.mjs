@@ -95,7 +95,7 @@ export async function main(lighthouse, browser, requestedUrl, origin) {
 
   // Direct Lighthouse to use the same Puppeteer page.
   // Disable storage reset so login session is preserved.
-  const result = await lighthouse(
+  const result = await lighthouse.default(
     requestedUrl,
     { disableStorageReset: true },
     undefined,
