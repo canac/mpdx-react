@@ -1,8 +1,6 @@
-'use strict';
-
 /* eslint-disable no-console */
 
-const { getOrigin } = require('./lighthouse-origin');
+import fs from 'fs';
 
 /**
  * @param {puppeteer.Page} page
@@ -10,7 +8,7 @@ const { getOrigin } = require('./lighthouse-origin');
  */
 async function login(page, origin) {
   if (process.env.PREVIEW_URL) {
-    loadInitialPage();
+    await loadInitialPage(page, origin);
   } else {
     await page.goto(origin);
   }
@@ -56,20 +54,19 @@ async function login(page, origin) {
   }
 }
 
-async function loadInitialPage() {
-  const originResponse = await page.goto(origin);
+export async function loadInitialPage(page, origin, timeout = 60_000) {
+  let originResponse = await page.goto(origin);
 
-  const initialLoadId = setInterval(async () => {
-    if (originResponse.status && originResponse.status !== 404) {
-      return;
-    } else {
-      await page.goto(origin);
-    }
-  }, 60_000);
-
-  if (originResponse.status && originResponse.status !== 404) {
-    clearInterval(initialLoadId);
-  }
+  return await new Promise((resolve) => {
+    const initialLoadId = setInterval(async () => {
+      if (originResponse.status && originResponse.status !== 404) {
+        resolve(originResponse);
+        clearInterval(initialLoadId);
+      } else {
+        originResponse = await page.goto(origin);
+      }
+    }, timeout);
+  });
 }
 
 async function loginToOkta(page) {
@@ -90,20 +87,15 @@ async function loginToOkta(page) {
   await redirectFromOkta;
 }
 
-async function main(browser, requestedUrl) {
-  const lighthouse = await import(
-    /* webpackChunkName: 'lighthouse' */
-    'lighthouse'
-  );
-
+export async function main(lighthouse, browser, requestedUrl, origin) {
   const page = await browser.newPage();
 
   // Setup the browser session to be logged into our site.
-  await login(page, getOrigin());
+  await login(page, origin);
 
   // Direct Lighthouse to use the same Puppeteer page.
   // Disable storage reset so login session is preserved.
-  const result = await lighthouse.default(
+  const result = await lighthouse(
     requestedUrl,
     { disableStorageReset: true },
     undefined,
@@ -117,11 +109,6 @@ async function main(browser, requestedUrl) {
 }
 
 async function storeResults(result) {
-  const fs = await import(
-    /* webpackChunkName: 'fs' */
-    'fs'
-  );
-
   const coreWebVitals = ['largest-contentful-paint', 'cumulative-layout-shift'];
   let overallScores = Object.values(result.lhr.categories)
     .map((category) => category.score)
@@ -139,23 +126,25 @@ async function storeResults(result) {
     }
   });
 
-  let markdownResults = `## ${result.lhr.finalDisplayedUrl}\n**Overall Scores:** ${overallScores}\n\n`;
+  let markdownResults = `${result.lhr.finalDisplayedUrl}\n<details><summary>Scores</summary>\n\n* **Overall Scores:** ${overallScores}\n`;
 
   // Output the result.
   console.log(`Lighthouse scores: ${overallScores}`);
+
+  let markdownWarning = '';
   coreWebVitalScores.forEach((vital) => {
     console.log(`${vital.title}: ${vital.displayValue}`);
     if (vital.numericValue > vital.badThreshold) {
-      markdownResults += `> [!CAUTION]\n > `;
+      markdownWarning = `> [!CAUTION]\n > `;
     } else if (vital.numericValue > vital.goodThreshold) {
-      markdownResults += `> [!WARNING]\n > `;
+      markdownWarning = markdownWarning ?? `> [!WARNING]\n > `;
     }
-    markdownResults += `**${vital.title}:** ${vital.displayValue}\n\n`;
+    markdownResults += `* **${vital.title}:** ${vital.displayValue}\n`;
   });
+  markdownResults += '</details>\n\n';
 
-  fs.appendFile('lighthouse-results.md', markdownResults);
+  fs.appendFile(
+    './lighthouse/lighthouse-results.md',
+    markdownWarning + markdownResults,
+  );
 }
-
-module.exports = async (browser, context) => {
-  await main(browser, context.url);
-};
