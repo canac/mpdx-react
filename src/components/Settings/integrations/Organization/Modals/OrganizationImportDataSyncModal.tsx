@@ -102,12 +102,13 @@ export const OrganizationImportDataSyncModal: React.FC<
         throw new Error(t('Cannot upload file: server error'));
       }
 
-      setIsSubmitting(false);
       handleClose();
     } catch (err) {
       enqueueSnackbar(getErrorMessage(err), {
         variant: 'error',
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (

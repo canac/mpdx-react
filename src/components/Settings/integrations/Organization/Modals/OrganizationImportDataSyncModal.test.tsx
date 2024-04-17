@@ -165,7 +165,7 @@ describe('OrganizationImportDataSyncModal', () => {
           type: 'xml',
         });
 
-        await act(() => {
+        act(() => {
           userEvent.upload(getByTestId('importFileUploader'), tntDataSync);
         });
         await waitFor(() => {

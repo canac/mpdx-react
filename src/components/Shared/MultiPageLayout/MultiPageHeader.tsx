@@ -11,7 +11,7 @@ export enum HeaderTypeEnum {
   Settings = 'settings',
 }
 
-export const MultiPageHeaderHeight = theme.spacing(10);
+export const multiPageHeaderHeight = theme.spacing(10);
 
 interface MultiPageHeaderProps {
   isNavListOpen: boolean;
@@ -26,7 +26,7 @@ const StickyHeader = styled(Box)(() => ({
   top: 0,
   borderBottom: '1px solid',
   borderBottomColor: theme.palette.grey[200],
-  height: MultiPageHeaderHeight,
+  height: multiPageHeaderHeight,
   zIndex: '700',
   background: theme.palette.common.white,
 }));

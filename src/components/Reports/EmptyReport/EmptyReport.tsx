@@ -5,7 +5,10 @@ import { styled } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { AddDonation } from 'src/components/Layouts/Primary/TopBar/Items/AddMenu/Items/AddDonation/AddDonation';
 import { NextLinkComposed } from 'src/components/common/Links/NextLinkComposed';
-import Modal from 'src/components/common/Modal/Modal';
+import {
+  DynamicModal,
+  preloadModal,
+} from 'src/components/common/Modal/DynamicModal';
 import { useAccountListId } from 'src/hooks/useAccountListId';
 
 interface Props {
@@ -56,6 +59,7 @@ export const EmptyReport: React.FC<Props> = ({
           <Button
             variant="contained"
             color="primary"
+            onMouseEnter={preloadModal}
             onClick={() => setAddDonationOpen(true)}
           >
             {t('Add New Donation')}
@@ -63,7 +67,7 @@ export const EmptyReport: React.FC<Props> = ({
         )}
       </Box>
 
-      <Modal
+      <DynamicModal
         isOpen={addDonationOpen}
         handleClose={handleCloseAddDonation}
         title={t('Add Donation')}
@@ -74,7 +78,7 @@ export const EmptyReport: React.FC<Props> = ({
           accountListId={accountListId ?? ''}
           handleClose={handleCloseAddDonation}
         />
-      </Modal>
+      </DynamicModal>
     </BoxWrapper>
   );
 };

@@ -7,7 +7,7 @@ import { SidePanelsLayout } from 'src/components/Layouts/SidePanelsLayout';
 import {
   HeaderTypeEnum,
   MultiPageHeader,
-  MultiPageHeaderHeight,
+  multiPageHeaderHeight,
 } from 'src/components/Shared/MultiPageLayout/MultiPageHeader';
 import {
   MultiPageMenu,
@@ -76,7 +76,7 @@ export const SettingsWrapper: React.FC<SettingsWrapperProps> = ({
               <PageContentWrapper
                 maxWidth="lg"
                 style={{
-                  height: `calc((100vh - ${navBarHeight} - ${MultiPageHeaderHeight}))`,
+                  height: `calc(100vh - ${navBarHeight} - ${multiPageHeaderHeight})`,
                 }}
               >
                 {children}

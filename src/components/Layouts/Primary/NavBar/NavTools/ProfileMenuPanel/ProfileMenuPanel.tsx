@@ -35,19 +35,20 @@ const LeafListItemHover = styled(LeafListItem)(() => ({
   },
 }));
 
-const style = {
+const AccountListButton = styled(Button)(() => ({
+  paddingLeft: theme.spacing(2),
+  paddingTop: 11,
+  paddingBottom: 11,
+}));
+
+const StyledButton = styled(Button)(() => ({
   color: theme.palette.text.secondary,
   padding: '11px 8px 11px 40px',
   justifyContent: 'flex-start',
   textTransform: 'none' as any,
   letterSpacing: 0,
   width: '100%',
-};
-const accountListStyle = {
-  paddingLeft: theme.spacing(2),
-  paddingTop: 11,
-  paddingBottom: 11,
-};
+})) as typeof Button;
 
 const addProfileContent: ProfileMenuContent[] = [
   {
@@ -101,7 +102,7 @@ export const ProfileMenuPanel: React.FC = () => {
             disableGutters
             onClick={toggleAccountsDrawer}
           >
-            <Button style={style}>
+            <StyledButton>
               <Title
                 style={{
                   whiteSpace: 'nowrap',
@@ -117,7 +118,7 @@ export const ProfileMenuPanel: React.FC = () => {
                 }
               </Title>
               <ChevronRight />
-            </Button>
+            </StyledButton>
           </LeafListItem>
           <MobileDrawer
             anchor="left"
@@ -129,12 +130,12 @@ export const ProfileMenuPanel: React.FC = () => {
               disableGutters
               onClick={toggleAccountsDrawer}
             >
-              <Button style={accountListStyle}>
+              <AccountListButton>
                 <ArrowBackIcon
                   style={{ color: 'white', marginRight: theme.spacing(2) }}
                 />
                 <Title>{t('Account List Selector')}</Title>
-              </Button>
+              </AccountListButton>
             </LeafListItem>
             {data?.accountLists.nodes.map((accountList) => (
               <LeafListItemHover
@@ -149,9 +150,9 @@ export const ProfileMenuPanel: React.FC = () => {
                 }}
                 onClick={() => changeAccountListId(accountList.id)}
               >
-                <Button style={accountListStyle}>
+                <AccountListButton>
                   <Title>{accountList.name}</Title>
-                </Button>
+                </AccountListButton>
               </LeafListItemHover>
             ))}
           </MobileDrawer>
@@ -159,53 +160,50 @@ export const ProfileMenuPanel: React.FC = () => {
       )}
       {addProfileContent.map(({ text, path, onClick }, index) => (
         <LeafListItem key={index} disableGutters onClick={onClick}>
-          <Button
-            style={style}
+          <StyledButton
             component={NextLinkComposed}
-            to={`/accountLists/${accountListId}/${path}`}
+            to={`/accountLists/${accountListId}${path}`}
           >
             <Title>{t(text)}</Title>
-          </Button>
+          </StyledButton>
         </LeafListItem>
       ))}
       {(data?.user?.admin ||
         !!data?.user?.administrativeOrganizations?.nodes?.length) && (
         <LeafListItem disableGutters>
-          <Button
-            style={style}
+          <StyledButton
             component={NextLinkComposed}
             to={`/accountLists/${accountListId}/settings/organizations`}
           >
             <Title>{t('Manage Organizations')}</Title>
-          </Button>
+          </StyledButton>
         </LeafListItem>
       )}
       {(data?.user?.admin || data?.user?.developer) && (
         <LeafListItem disableGutters>
-          <Button
-            style={style}
+          <StyledButton
             component={NextLinkComposed}
             to={`/accountLists/${accountListId}/settings/admin`}
           >
             <Title>{t('Admin Console')}</Title>
-          </Button>
+          </StyledButton>
         </LeafListItem>
       )}
       {data?.user?.developer && (
         <LeafListItem disableGutters>
           <HandoffLink path="/auth/user/admin">
-            <Button style={style}>
+            <StyledButton>
               <Title>{t('Backend Admin')}</Title>
-            </Button>
+            </StyledButton>
           </HandoffLink>
         </LeafListItem>
       )}
       {data?.user?.developer && (
         <LeafListItem disableGutters>
           <HandoffLink path="/auth/user/sidekiq">
-            <Button style={style}>
+            <StyledButton>
               <Title>{t('Sidekiq')}</Title>
-            </Button>
+            </StyledButton>
           </HandoffLink>
         </LeafListItem>
       )}
