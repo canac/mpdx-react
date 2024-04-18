@@ -94,7 +94,7 @@ export const settingsNavItems: NavItems[] = [
     grantedAccess: ['admin', 'developer'],
   },
   {
-    id: 'backendAdmin',
+    id: '/auth/user/admin',
     title: 'Backend Admin',
     handoff: true,
     handoffAuth: true,
