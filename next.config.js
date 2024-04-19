@@ -72,9 +72,7 @@ const config = {
     DATADOG_APP_ID: process.env.DATADOG_APP_ID,
     DATADOG_CLIENT_TOKEN: process.env.DATADOG_CLIENT_TOKEN,
     DATADOG_CONFIGURED: Boolean(
-      process.env.NODE_ENV === 'production' &&
-        process.env.DATADOG_APP_ID &&
-        process.env.DATADOG_CLIENT_TOKEN,
+      process.env.DATADOG_APP_ID && process.env.DATADOG_CLIENT_TOKEN,
     ).toString(),
     HS_COACHING_ACTIVITY_SUMMARY: process.env.HS_COACHING_ACTIVITY_SUMMARY,
     HS_COACHING_ACTIVITY: process.env.HS_COACHING_ACTIVITY,
