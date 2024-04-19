@@ -202,7 +202,7 @@ export const ProfileMenuPanel: React.FC = () => {
         <LeafListItem disableGutters>
           <HandoffLink path="/auth/user/sidekiq" auth>
             <StyledButton>
-              <Title>{t('Sidekiqss')}</Title>
+              <Title>{t('Sidekiq')}</Title>
             </StyledButton>
           </HandoffLink>
         </LeafListItem>
