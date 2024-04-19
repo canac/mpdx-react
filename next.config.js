@@ -72,9 +72,7 @@ const config = {
     DATADOG_APP_ID: process.env.DATADOG_APP_ID,
     DATADOG_CLIENT_TOKEN: process.env.DATADOG_CLIENT_TOKEN,
     DATADOG_CONFIGURED: Boolean(
-      process.env.NODE_ENV === 'production' &&
-        process.env.DATADOG_APP_ID &&
-        process.env.DATADOG_CLIENT_TOKEN,
+      process.env.DATADOG_APP_ID && process.env.DATADOG_CLIENT_TOKEN,
     ).toString(),
     HS_COACHING_ACTIVITY_SUMMARY: process.env.HS_COACHING_ACTIVITY_SUMMARY,
     HS_COACHING_ACTIVITY: process.env.HS_COACHING_ACTIVITY,
@@ -96,6 +94,7 @@ const config = {
       process.env.HS_SETTINGS_SERVICES_SUGGESTIONS,
     HS_SETUP_FIND_ORGANIZATION: process.env.HS_SETUP_FIND_ORGANIZATION,
     ALERT_MESSAGE: process.env.ALERT_MESSAGE,
+    DD_ENV: process.env.DD_ENV,
   },
   experimental: {
     modularizeImports: {
