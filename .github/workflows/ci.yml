@@ -140,7 +140,7 @@ jobs:
         env:
           secrets: '{"JWT_SECRET":"JWT_SECRET","OKTA_CLIENT_SECRET":"OKTA_CLIENT_SECRET"}'
       - name: Analyze bundle sizes
-        uses: canac/actions-next-bundle-analyzer@dynamic-imports
+        uses: canac/actions-next-bundle-analyzer@dynamic-imports-wip
         # with:
         #   create-issue: false
         env:
