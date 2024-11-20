@@ -16,7 +16,7 @@ export const getLocalizedAddressLocation = (
 ): string => {
   switch (location) {
     case AddressLocationEnum.Home:
-      return t('Home');
+      return t('***Home');
     case AddressLocationEnum.Business:
       return t('Business');
     case AddressLocationEnum.Mailing:
