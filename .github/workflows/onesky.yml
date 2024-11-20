@@ -1,4 +1,4 @@
-name: OneSky Translation Download
+name: OneSky Translation PR
 
 on:
   schedule:
