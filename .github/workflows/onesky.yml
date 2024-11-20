@@ -11,7 +11,6 @@ permissions:
 
 jobs:
   download:
-    name: Download Latest Strings from OneSky
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
