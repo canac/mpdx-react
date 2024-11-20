@@ -2,7 +2,7 @@ name: OneSky Translation PR
 
 on:
   schedule:
-    - cron: '* * * * *' # run every day at 6am
+    - cron: '*/5 * * * *' # run every day at 6am
   workflow_dispatch:
 
 permissions:
