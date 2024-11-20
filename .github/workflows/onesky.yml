@@ -19,6 +19,13 @@ jobs:
           node-version-file: .tool-versions
       - name: 📦 Install Dependencies
         run: yarn install --immutable --immutable-cache
+      - name: 📈 Run GraphQL Codegen
+        uses: nick-fields/retry@v3
+        with:
+          command: yarn gql
+          timeout_minutes: 1
+          retry_wait_seconds: 60
+          max_attempts: 5
       - name: 🌐 Extract Translations
         run: yarn extract
       - name: ⛅🔽 OneSky Download
