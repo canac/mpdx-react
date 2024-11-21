@@ -7,7 +7,7 @@ export const usePhoneLocations = (): Record<string, string> => {
 
   const locations = useMemo(
     () => ({
-      mobile: t('Mobile'),
+      mobile: t('***Mobile'),
       home: t('Home'),
       work: t('Work'),
       other: t('Other'),
